@@ -163,6 +163,7 @@
       <p><strong>Medida de Corte:</strong> <span id="modeloCorte"></span></p>
       <p><strong>Potencia:</strong> <span id="modeloPotencia"></span></p>
       <p><strong>Rendimiento:</strong> <span id="modeloRendimiento"></span></p>
+      <p><strong>Estanqueidad:</strong> <span id="modeloEstanqueidad"></span></p>
     </div>
   </div>
 
@@ -170,87 +171,87 @@
     // Datos de las tiras LED
     const tirasLED = [
       // Monocolor
-      { tipo: "mono", modelo: "BUCINE", valor: "50-24-mono-2-400"},
-      { tipo: "mono", modelo: "MESINA", valor: "50-12-mono-4.8-450"},
-      { tipo: "mono", modelo: "TOSCANA", valor: "50-12-mono-4.8-450"},
-      { tipo: "mono", modelo: "PISA", valor: "50-12-mono-4.8-450"},
-      { tipo: "mono", modelo: "COMO", valor: "50-24-mono-5-600"},
-      { tipo: "mono", modelo: "CASSINO", valor: "83-24-mono-7.2-800"},
-      { tipo: "mono", modelo: "PAVIA", valor: "62.5-24-mono-7.2-1000"},
-      { tipo: "mono", modelo: "CALDIERO", valor: "33.3-48-mono-8.8-1000"},
-      { tipo: "mono", modelo: "GENOVA12V", valor: "25-12-mono-9.6-850"},
-      { tipo: "mono", modelo: "CATANIA12V", valor: "25-12-mono-9.6-850"},
-      { tipo: "mono", modelo: "GENOVA24V", valor: "50-24-mono-9.6-850"},
-      { tipo: "mono", modelo: "CATANIA24V", valor: "50-24-mono-9.6-850"},
-      { tipo: "mono", modelo: "IVREA", valor: "50-24-mono-9.6-1000"},
-      { tipo: "mono", modelo: "BAVENO", valor: "50-24-mono-9.6-750"},
-      { tipo: "mono", modelo: "BOSA", valor: "50-24-mono-9.6-750"},
-      { tipo: "mono", modelo: "BRA", valor: "100-24-mono-9.6-1500"},
-      { tipo: "mono", modelo: "CUNEO", valor: "50-24-mono-9.6-800"},
-      { tipo: "mono", modelo: "AFFI", valor: "50-24-mono-9.6-800"},
-      { tipo: "mono", modelo: "CERVIA", valor: "50-12-mono-10-900"},
-      { tipo: "mono", modelo: "NOVARA", valor: "71.4-24-mono-10-1500"},
-      { tipo: "mono", modelo: "PARMA", valor: "50-24-mono-8-1000"},
-      { tipo: "mono", modelo: "LIVORNO", valor: "100-24-mono-14.4-1350"},
-      { tipo: "mono", modelo: "VOLTERRA", valor: "100-24-mono-14.4-1350"},
-      { tipo: "mono", modelo: "IMOLA", valor: "100-24-mono-14.4-1350"},
-      { tipo: "mono", modelo: "CASCINA", valor: "100-24-mono-14.4-1400"},
-      { tipo: "mono", modelo: "SALO", valor: "50-24-mono-14.4-1900"},
-      { tipo: "mono", modelo: "ALCAMO", valor: "50-24-mono-14.4-2000"},
-      { tipo: "mono", modelo: "LIMONE", valor: "50-24-mono-14.4-1100"},
-      { tipo: "mono", modelo: "CIVITA", valor: "50-24-mono-14.4-1600"},
-      { tipo: "mono", modelo: "CORATO", valor: "50-24-mono-15-1500"},
-      { tipo: "mono", modelo: "SICILIA", valor: "50-24-mono-15-1500"},
-      { tipo: "mono", modelo: "BASTIA", valor: "50-24-mono-15-1500"},
-      { tipo: "mono", modelo: "CHIERI", valor: "50-24-mono-17-1700"},
-      { tipo: "mono", modelo: "NORA", valor: "50-24-mono-19.2-3000"},
-      { tipo: "mono", modelo: "ANZIO", valor: "50-24-mono-19.2-3000"},
-      { tipo: "mono", modelo: "GAVI", valor: "50-24-mono-19.2-1700"},
-      { tipo: "mono", modelo: "TERNI", valor: "33.3-24-mono-21.6-3100"},
-      { tipo: "mono", modelo: "ROMA", valor: "30-24-mono-24.5-2100"},
-      { tipo: "mono", modelo: "FORENZA", valor: "83.3-24-mono-26-3900"},
-      { tipo: "mono", modelo: "VENECIA", valor: "18.5-24-mono-39-4800"},
+      { tipo: "mono", modelo: "BUCINE", valor: "50-24-mono-2-400-20/68"},
+      { tipo: "mono", modelo: "MESINA", valor: "50-12-mono-4.8-450-20/65"},
+      { tipo: "mono", modelo: "TOSCANA", valor: "50-12-mono-4.8-450-20"},
+      { tipo: "mono", modelo: "PISA", valor: "50-12-mono-4.8-450-65"},
+      { tipo: "mono", modelo: "COMO", valor: "50-24-mono-5-600-20/65"},
+      { tipo: "mono", modelo: "CASSINO", valor: "83-24-mono-7.2-800-20"},
+      { tipo: "mono", modelo: "PAVIA", valor: "62.5-24-mono-7.2-1000-20/65/68"},
+      { tipo: "mono", modelo: "CALDIERO", valor: "33.3-48-mono-8.8-1000-20/68"},
+      { tipo: "mono", modelo: "GENOVA12V", valor: "25-12-mono-9.6-850-20"},
+      { tipo: "mono", modelo: "CATANIA12V", valor: "25-12-mono-9.6-850-65"},
+      { tipo: "mono", modelo: "GENOVA24V", valor: "50-24-mono-9.6-850-20"},
+      { tipo: "mono", modelo: "CATANIA24V", valor: "50-24-mono-9.6-850-65"},
+      { tipo: "mono", modelo: "IVREA", valor: "50-24-mono-9.6-1000-20"},
+      { tipo: "mono", modelo: "BAVENO", valor: "50-24-mono-9.6-750-68"},
+      { tipo: "mono", modelo: "BOSA", valor: "50-24-mono-9.6-750-68"},
+      { tipo: "mono", modelo: "BRA", valor: "100-24-mono-9.6-1500-20"},
+      { tipo: "mono", modelo: "CUNEO", valor: "50-24-mono-9.6-800-20"},
+      { tipo: "mono", modelo: "AFFI", valor: "50-24-mono-9.6-800-65"},
+      { tipo: "mono", modelo: "CERVIA", valor: "50-12-mono-10-900-20"},
+      { tipo: "mono", modelo: "NOVARA", valor: "71.4-24-mono-10-1500-20/65"},
+      { tipo: "mono", modelo: "PARMA", valor: "50-24-mono-8-1000-20/67"},
+      { tipo: "mono", modelo: "LIVORNO", valor: "100-24-mono-14.4-1350-20"},
+      { tipo: "mono", modelo: "VOLTERRA", valor: "100-24-mono-14.4-1350-20"},
+      { tipo: "mono", modelo: "IMOLA", valor: "100-24-mono-14.4-1350-65"},
+      { tipo: "mono", modelo: "CASCINA", valor: "100-24-mono-14.4-1400-68"},
+      { tipo: "mono", modelo: "SALO", valor: "50-24-mono-14.4-1900-20"},
+      { tipo: "mono", modelo: "ALCAMO", valor: "50-24-mono-14.4-2000-20/65/67/68"},
+      { tipo: "mono", modelo: "LIMONE", valor: "50-24-mono-14.4-1100-20"},
+      { tipo: "mono", modelo: "CIVITA", valor: "50-24-mono-14.4-1600-68"},
+      { tipo: "mono", modelo: "CORATO", valor: "50-24-mono-15-1500-20/67"},
+      { tipo: "mono", modelo: "SICILIA", valor: "50-24-mono-15-1500-20"},
+      { tipo: "mono", modelo: "BASTIA", valor: "50-24-mono-15-1500-65"},
+      { tipo: "mono", modelo: "CHIERI", valor: "50-24-mono-17-1700-68"},
+      { tipo: "mono", modelo: "NORA", valor: "50-24-mono-19.2-3000-20"},
+      { tipo: "mono", modelo: "ANZIO", valor: "50-24-mono-19.2-3000-65"},
+      { tipo: "mono", modelo: "GAVI", valor: "50-24-mono-19.2-1700-20"},
+      { tipo: "mono", modelo: "TERNI", valor: "33.3-24-mono-21.6-3100-20/65"},
+      { tipo: "mono", modelo: "ROMA", valor: "30-24-mono-24.5-2100-20"},
+      { tipo: "mono", modelo: "FORENZA", valor: "83.3-24-mono-26-3900-20"},
+      { tipo: "mono", modelo: "VENECIA", valor: "18.5-24-mono-39-4800-20"},
       
       // CCT
-      { tipo: "cct", modelo: "RIETI", valor: "71.4-24-cct-19.2-800"},
-      { tipo: "cct", modelo: "CARRARA", valor: "71.4-24-cct-19.2-800"},
+      { tipo: "cct", modelo: "RIETI", valor: "71.4-24-cct-19.2-800-20"},
+      { tipo: "cct", modelo: "CARRARA", valor: "71.4-24-cct-19.2-800-65"},
       
       // COLORES
-      { tipo: "color", modelo: "PALERMO", valor: "50-24-color-12-Colores"},
+      { tipo: "color", modelo: "PALERMO", valor: "50-24-color-12-Colores-20/65"},
       
       // NEON
-      { tipo: "neon", modelo: "AZZATE", valor: "62.5-24-neon-8.1-500"},
-      { tipo: "neon", modelo: "ALESSANO", valor: "50-24-neon-14-RGB"},
-      { tipo: "neon", modelo: "ASSAGO", valor: "62.5-24-neon-12-390"},
-      { tipo: "neon", modelo: "AMENO", valor: "55.6-24-neon-16-RGB"},
-      { tipo: "neon", modelo: "ARONA", valor: "50-12-neon-12-210"},
-      { tipo: "neon", modelo: "DIMARO", valor: "50-24-neon-12-650"},
-      { tipo: "neon", modelo: "CENTO", valor: "0-24-neon-15-930"},
-      { tipo: "neon", modelo: "MIRA", valor: "25-24-neon-9-760"},
-      { tipo: "neon", modelo: "TRANI", valor: "21.7-24-neon-6-300"},
+      { tipo: "neon", modelo: "AZZATE", valor: "62.5-24-neon-8.1-500-67"},
+      { tipo: "neon", modelo: "ALESSANO", valor: "50-24-neon-14-RGB-67"},
+      { tipo: "neon", modelo: "ASSAGO", valor: "62.5-24-neon-12-390-67"},
+      { tipo: "neon", modelo: "AMENO", valor: "55.6-24-neon-16-RGB-67"},
+      { tipo: "neon", modelo: "ARONA", valor: "50-12-neon-12-210-67"},
+      { tipo: "neon", modelo: "DIMARO", valor: "50-24-neon-12-650-67"},
+      { tipo: "neon", modelo: "CENTO", valor: "0-24-neon-15-930-67"},
+      { tipo: "neon", modelo: "MIRA", valor: "25-24-neon-9-760-67"},
+      { tipo: "neon", modelo: "TRANI", valor: "21.7-24-neon-6-300-67"},
 
       // RGB / RGBW
-      { tipo: "rgb", modelo: "TRENTO", valor: "50-12-rgb-7.2-RGB"},
-      { tipo: "rgb", modelo: "TREVISO", valor: "50-12-rgb-7.2-RGB"},
-      { tipo: "rgb", modelo: "APRILIA", valor: "50-12-rgb-7.2-RGB"},
-      { tipo: "rgb", modelo: "BOZEN", valor: "50-24-rgb-12-RGB"},
-      { tipo: "rgb", modelo: "ASTI", valor: "50-24-rgb-12-RGB"},
-      { tipo: "rgb", modelo: "MONZA", valor: "100-24-rgb-14.4-RGB"},
-      { tipo: "rgb", modelo: "MODENA", valor: "100-24-rgb-14.4-RGB"},
-      { tipo: "rgb", modelo: "CROTONE", valor: "100-24-rgb-14.4-RGB"},
-      { tipo: "rgb", modelo: "LICATA", valor: "100-24-rgb-18-600"},
-      { tipo: "rgb", modelo: "MALPENSA", valor: "100-24-rgb-18-600"},
-      { tipo: "rgb", modelo: "PRATO", valor: "100-24-rgb-18-600"},
+      { tipo: "rgb", modelo: "TRENTO", valor: "50-12-rgb-7.2-RGB-20"},
+      { tipo: "rgb", modelo: "TREVISO", valor: "50-12-rgb-7.2-RGB-65"},
+      { tipo: "rgb", modelo: "APRILIA", valor: "50-12-rgb-7.2-RGB-68"},
+      { tipo: "rgb", modelo: "BOZEN", valor: "50-24-rgb-12-RGB-20"},
+      { tipo: "rgb", modelo: "ASTI", valor: "50-24-rgb-12-RGB-65"},
+      { tipo: "rgb", modelo: "MONZA", valor: "100-24-rgb-14.4-RGB-20"},
+      { tipo: "rgb", modelo: "MODENA", valor: "100-24-rgb-14.4-RGB-65"},
+      { tipo: "rgb", modelo: "CROTONE", valor: "100-24-rgb-14.4-RGB-68"},
+      { tipo: "rgb", modelo: "LICATA", valor: "100-24-rgb-18-600-20"},
+      { tipo: "rgb", modelo: "MALPENSA", valor: "100-24-rgb-18-600-65"},
+      { tipo: "rgb", modelo: "PRATO", valor: "100-24-rgb-18-600-68"},
       
       // ESPECIALES
-      { tipo: "especial", modelo: "BARLETTA", valor: "50-24-especial-12-830"},
-      { tipo: "especial", modelo: "ARICCIA", valor: "50-24-especial-12-640"},
-      { tipo: "especial", modelo: "PINETO", valor: "50-24-especial-12-920"},
-      { tipo: "especial", modelo: "ARITZIO", valor: "152-24-especial-18-1980"},
+      { tipo: "especial", modelo: "BARLETTA", valor: "50-24-especial-12-830-65H"},
+      { tipo: "especial", modelo: "ARICCIA", valor: "50-24-especial-12-640-65H"},
+      { tipo: "especial", modelo: "PINETO", valor: "50-24-especial-12-920-65H"},
+      { tipo: "especial", modelo: "ARITZIO", valor: "152-24-especial-18-1980-67"},
 
       // Tiras de 230V
-      { tipo: "alterna", modelo: "FERRARA II", valor: "100-230-alterna-17-1500"},
-      { tipo: "alterna", modelo: "TRIESTE", valor: "500-230-alterna-11-RGB"},
+      { tipo: "alterna", modelo: "FERRARA II", valor: "100-230-alterna-17-1500-67"},
+      { tipo: "alterna", modelo: "TRIESTE", valor: "500-230-alterna-11-RGB-67"},
     ];
 
     // Función para filtrar los modelos según el tipo seleccionado
@@ -281,12 +282,13 @@
       const tira = tirasLED.find(t => t.valor === modeloSeleccionado);
 
       if (tira) {
-        const [corte, voltaje, tipo, potencia, rendimiento] = tira.valor.split("-");
+        const [corte, voltaje, tipo, potencia, rendimiento, estanqueidad] = tira.valor.split("-");
         document.getElementById("modeloNombre").textContent = tira.modelo;
         document.getElementById("modeloVoltaje").textContent = `${voltaje}V`;
         document.getElementById("modeloCorte").textContent = `${corte} mm`;
         document.getElementById("modeloPotencia").textContent = `${potencia}W/Mt`;
         document.getElementById("modeloRendimiento").textContent = `${rendimiento}Lm/Mt`;
+        document.getElementById("modeloEstanqueidad").textContent = `IP ${estanqueidad}`;
       }
     }
 
