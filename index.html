@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de Corte de Tira LED</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .main-container {
+      display: flex;
+      gap: 20px;
+      max-width: 900px;
+      width: 100%;
+    }
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 50%;
+    }
+    .info-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      width: 50%;
+      text-align: left;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 15px 0 5px;
+      color: #555;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
+    }
+    select:focus, input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 25px;
+      font-size: 1.2em;
+      color: #333;
+      padding: 15px;
+      background-color: #e9f5ff;
+      border-radius: 8px;
+      border: 1px solid #007BFF;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 250px;
+      height: auto;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+    .info-container img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .info-container h2 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    .info-container p {
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="container">
+      <div class="logo">
+        <img src="https://ilutrek.es/wp-content/uploads/2020/02/ilutrek-logo.png" alt="Logo de la empresa">
+      </div>
+      <h1>Cálculo de Corte de Tira LED</h1>
+
+      <!-- Desplegable para filtrar por tipo de tira LED -->
+      <label for="tipo">Selecciona el tipo de tira LED:</label>
+      <select id="tipo" onchange="filtrarModelos()">
+        <option value="mono">Monocolor</option>
+        <option value="color">Colores</option>
+        <option value="cct">Cambio de Tonalidad</option>
+        <option value="rgb">RGB / RGBW</option>
+        <option value="neon">Led Neon</option>
+        <option value="especial">Especiales</option>
+        <option value="alterna">Tiras de 230V</option>
+      </select>
+
+      <!-- Desplegable para seleccionar el modelo de tira LED -->
+      <label for="modelo">Selecciona el modelo de tira LED:</label>
+      <select id="modelo" onchange="mostrarInformacion()"></select>
+
+      <!-- Campo para ingresar la longitud requerida -->
+      <label for="longitud">Longitud requerida (metros):</label>
+      <input type="number" id="longitud" placeholder="Ejemplo: 2.5" step="0.01">
+
+      <!-- Botón para calcular -->
+      <button onclick="calcularCorte()">Calcular</button>
+
+      <!-- Resultado del cálculo -->
+      <div class="result" id="resultado"></div>
+
+      <!-- Footer -->
+      <div class="footer">
+        © 2025 Ilutrek, S.L. Todos los derechos reservados.
+      </div>
+    </div>
+
+    <!-- Ventana lateral con información del modelo -->
+    <div class="info-container" id="infoModelo">
+      <h2>Información del Modelo</h2>
+      <img id="imagenModelo" src="" alt="Imagen del modelo">
+      <p><strong>Modelo:</strong> <span id="modeloNombre"></span></p>
+      <p><strong>Voltaje:</strong> <span id="modeloVoltaje"></span></p>
+      <p><strong>Medida de Corte:</strong> <span id="modeloCorte"></span></p>
+      <p><strong>Tipo:</strong> <span id="modeloTipo"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Datos de las tiras LED
+    const tirasLED = [
+      // Monocolor
+      { tipo: "mono", modelo: "BUCINE", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "MESINA", valor: "50-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "TOSCANA", valor: "50-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "PISA", valor: "50-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "COMO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CASSINO", valor: "83-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "PAVIA", valor: "62.5-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CALDIERO", valor: "33.3-48-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "GENOVA", valor: "25-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CATANIA", valor: "25-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "GENOVA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CATANIA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "IVREA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "BAVENO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "BOSA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "BRA", valor: "100-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CUNEO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "AFFI", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CERVIA", valor: "50-12-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "NOVARA", valor: "71.4-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "PALERMO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "LIVORNO", valor: "100-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "VOLTERRA", valor: "100-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "IMOLA", valor: "100-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CASCINA", valor: "100-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "SALO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "ALCAMO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "LIMONE", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CIVITA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CORATO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "SICILIA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "BASTIA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "CHIERI", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "NORA", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "ANZIO", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "GAVI", valor: "50-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "TERNI", valor: "33.3-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "ROMA", valor: "30-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "FORENZA", valor: "83.3-24-mono", imagen: "https://via.placeholder.com/300" },
+      { tipo: "mono", modelo: "VENECIA", valor: "18.5-24-mono", imagen: "https://via.placeholder.com/300" },
+      
+      // CCT
+      { tipo: "cct", modelo: "RIETI", valor: "71.4-24-cct", imagen: "https://via.placeholder.com/300" },
+      { tipo: "cct", modelo: "CARRARA", valor: "71.4-24-cct", imagen: "https://via.placeholder.com/300" },
+      
+      // COLORES
+      { tipo: "color", modelo: "PARMA", valor: "50-24-color", imagen: "https://via.placeholder.com/300" },
+      
+      // NEON
+      { tipo: "neon", modelo: "AZZATE", valor: "62.5-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "ALESSANO", valor: "50-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "ASSAGO", valor: "62.5-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "AMENO", valor: "55.6-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "ARONA", valor: "50-12-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "DIMARO", valor: "50-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "CENTO", valor: "0-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "MIRA", valor: "25-24-neon", imagen: "https://via.placeholder.com/300" },
+      { tipo: "neon", modelo: "TRANI", valor: "21.7-24-neon", imagen: "https://via.placeholder.com/300" },
+
+      // RGB / RGBW
+      { tipo: "rgb", modelo: "TRENTO", valor: "50-12-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "TREVISO", valor: "50-12-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "APRILIA", valor: "50-12-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "BOZEN", valor: "50-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "ASTI", valor: "50-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "MONZA", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "MODENA", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "CROTONE", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "LICATA", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "MALPENSA", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      { tipo: "rgb", modelo: "PRATO", valor: "100-24-rgb", imagen: "https://via.placeholder.com/300" },
+      
+      // ESPECIALES
+      { tipo: "especial", modelo: "BARLETTA", valor: "50-24-especial", imagen: "https://via.placeholder.com/300" },
+      { tipo: "especial", modelo: "ARICCIA", valor: "50-24-especial", imagen: "https://via.placeholder.com/300" },
+      { tipo: "especial", modelo: "PINETO", valor: "50-24-especial", imagen: "https://via.placeholder.com/300" },
+      { tipo: "especial", modelo: "ARITZIO", valor: "152-24-especial", imagen: "https://via.placeholder.com/300" },
+
+      // Tiras de 230V
+      { tipo: "alterna", modelo: "FERRARA II", valor: "100-230-alterna", imagen: "https://via.placeholder.com/300" },
+      { tipo: "alterna", modelo: "TRIESTE", valor: "500-230-alterna", imagen: "https://via.placeholder.com/300" },
+    ];
+
+    // Función para filtrar los modelos según el tipo seleccionado
+    function filtrarModelos() {
+      const tipoSeleccionado = document.getElementById("tipo").value;
+      const selectModelo = document.getElementById("modelo");
+
+      // Limpiar el desplegable de modelos
+      selectModelo.innerHTML = "";
+
+      // Filtrar y agregar las opciones correspondientes
+      tirasLED
+        .filter(tira => tira.tipo === tipoSeleccionado)
+        .forEach(tira => {
+          const option = document.createElement("option");
+          option.value = tira.valor;
+          option.textContent = tira.modelo;
+          selectModelo.appendChild(option);
+        });
+
+      // Mostrar la información del primer modelo por defecto
+      mostrarInformacion();
+    }
+
+    // Función para mostrar la información del modelo seleccionado
+    function mostrarInformacion() {
+      const modeloSeleccionado = document.getElementById("modelo").value;
+      const tira = tirasLED.find(t => t.valor === modeloSeleccionado);
+
+      if (tira) {
+        const [corte, voltaje, tipo] = tira.valor.split("-");
+        document.getElementById("imagenModelo").src = tira.imagen;
+        document.getElementById("modeloNombre").textContent = tira.modelo;
+        document.getElementById("modeloVoltaje").textContent = `${voltaje}V`;
+        document.getElementById("modeloCorte").textContent = `${corte} mm`;
+        document.getElementById("modeloTipo").textContent = tipo.toUpperCase();
+      }
+    }
+
+    // Función para calcular el corte
+    function calcularCorte() {
+      const modeloSeleccionado = document.getElementById("modelo").value;
+      const [corte, voltaje, tipo] = modeloSeleccionado.split("-");
+      const longitud = parseFloat(document.getElementById("longitud").value);
+
+      // Validar valores de entrada
+      if (isNaN(corte) || corte < 0 || isNaN(longitud) || longitud <= 0) {
+        document.getElementById("resultado").innerText = "Por favor, ingresa valores válidos.";
+        return;
+      }
+
+      // Restricciones basadas en el voltaje
+      let longitudMaxima;
+      if (voltaje === "230") {
+        longitudMaxima = 50; // Límite de 50 metros para tiras de 230V
+      } else if (voltaje === "12") {
+        longitudMaxima = 5;
+      } else if (voltaje === "24") {
+        longitudMaxima = 10;
+      } else if (voltaje === "48") {
+        longitudMaxima = 30;
+      }
+
+      if (longitud > longitudMaxima) {
+        document.getElementById("resultado").innerText = `No se pueden realizar medidas en tiras de LED superiores a ${longitudMaxima} metros para este modelo.`;
+        return;
+      }
+
+      // Si el corte es 0 (corte libre), mostrar un mensaje especial
+      if (corte === "0") {
+        document.getElementById("resultado").innerHTML = `
+          Longitud requerida: <strong>${longitud.toFixed(2)} metros</strong><br>
+          Este modelo permite cortes libres.
+        `;
+        return;
+      }
+
+      // Convertir longitud requerida a milímetros
+      const longitudMM = longitud * 1000;
+
+      // Calcular el mayor y menor corte posible
+      const mayorCorte = Math.floor(longitudMM / corte) * corte; // Redondeo hacia abajo
+      const menorCorte = Math.ceil(longitudMM / corte) * corte; // Redondeo hacia arriba
+
+      document.getElementById("resultado").innerHTML = `
+        Longitud requerida: <strong>${longitud.toFixed(2)} metros</strong><br>
+        Menor corte posible: <strong>${(mayorCorte / 1000).toFixed(2)} metros</strong><br>
+        Mayor corte posible: <strong>${(menorCorte / 1000).toFixed(2)} metros</strong>
+      `;
+    }
+
+    // Inicializar el desplegable de modelos al cargar la página
+    filtrarModelos();
+  </script>
+</body>
+</html>
